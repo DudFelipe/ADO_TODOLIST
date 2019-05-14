@@ -24,7 +24,7 @@ public class Pessoa implements Serializable {
     private String nomeCompleto;
 
     //@Transient // REMOVER O @Transient e USAR A ANOTAÇÃO DE ASSOCIAÇÃO COM A CLASSE Tarefa
-    @OneToMany(mappedBy = "responsavel")
+    @OneToMany(mappedBy = "responsavel", cascade = CascadeType.ALL)
     private List<Tarefa> tarefas;
 
     public Pessoa() {

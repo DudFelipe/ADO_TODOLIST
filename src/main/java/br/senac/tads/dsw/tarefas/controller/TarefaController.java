@@ -29,7 +29,7 @@ public class TarefaController {
     public ModelAndView adicionar(){
         ModelAndView mv = new ModelAndView("Tela2A");
 
-        List<Pessoa> pessoas =pessoaRepository.findAll();
+        List<Pessoa> pessoas = pessoaRepository.findAll();
 
         mv.addObject("tarefa", new Tarefa());
         mv.addObject("pessoas", pessoas);
