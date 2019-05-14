@@ -35,7 +35,7 @@
 
         <div>
             <label class="col-sm-2 col-form-label" >Responsável</label>
-            <select id="pessoa">
+            <select th:field="*{responsavel}" id="pessoa">
                 <option th:each="pessoa : ${pessoas}"
                         th:value="${pessoa.id}"
                         th:text="${pessoa.nomeCompleto}"
