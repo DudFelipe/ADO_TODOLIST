@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Produtos - Inclusão</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <form method="POST" th:object="${tarefa}">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="nome">Nome</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="nome" name="nome" th:field="*{nome}">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="descricao">Descrição</label>
+            <div class="col-sm-10">
+                <textarea class="form-control" id="descricao" name="descricao" th:field="*{descricao}"></textarea>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="dataInicioPrevista">Data inicio prevista</label>
+            <div class="col-sm-4">
+                <input type="date" class="form-control" id="dataInicioPrevista" name="dataInicioPrevista" th:field="*{dataInicioPrevisto}">
+            </div>
+            <label class="col-sm-2 col-form-label" for="dataTerminoPrevisto">Data termino prevista</label>
+            <div class="col-sm-4">
+                <input type="date" class="form-control" id="dataTerminoPrevisto" name="dataTerminoPrevisto" th:field="*{dataTerminoPrevisto}">
+            </div>
+        </div>
+
+        <div>
+            <label class="col-sm-2 col-form-label" >Responsável</label>
+            <select id="pessoa">
+                <option th:each="pessoa : ${pessoas}"
+                        th:value="${pessoa.id}"
+                        th:text="${pessoa.nomeCompleto}"
+                        th:field="*{responsavel}"
+                        th:name="${pessoa.nomeCompleto}"
+                        th:id="${pessoa.id}"></option>
+            </select>
+        </div>
+
+        <div class="form-group row">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-3">
+                <button type="submit" class="btn btn-success col-sm-12">Salvar</button>
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-warning col-sm-12" th:href="@{/index}">Cancelar</button>
+            </div>
+            <div class="col-sm-3"></div>
+        </div>
+
+    </form>
+
+</div>
+</body>
+</html>
