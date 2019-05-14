@@ -78,10 +78,39 @@ public class TarefaController {
         tare.setDataTerminoPrevisto(t.getDataTerminoPrevisto());
         tare.setNome(t.getNome());
         tare.setResponsavel(t.getResponsavel());
+        t.setDataUltimaAlteracao(LocalDateTime.now());
 
         tarefaRepository.save(tare);
 
         return mv;
     }
 
+    @GetMapping("/iniciar/{id}")
+    public ModelAndView iniciar(@PathVariable int id){
+        ModelAndView mv = new ModelAndView("redirect:/index");
+
+        Tarefa t = tarefaRepository.getOne(id);
+
+        t.setDataInicioReal(LocalDate.now());
+        t.setStatus(1);
+        t.setDataUltimaAlteracao(LocalDateTime.now());
+
+        tarefaRepository.save(t);
+
+        return mv;
+    }
+
+    @GetMapping("/concluir/{id}")
+    public ModelAndView concluir(@PathVariable int id){
+        ModelAndView mv = new ModelAndView("redirect:/index");
+
+        Tarefa t = tarefaRepository.getOne(id);
+        t.setDataTerminoReal(LocalDate.now());
+        t.setStatus(2);
+        t.setDataUltimaAlteracao(LocalDateTime.now());
+
+        tarefaRepository.save(t);
+
+        return mv;
+    }
 }

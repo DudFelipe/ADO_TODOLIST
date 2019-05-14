@@ -24,16 +24,100 @@
         <tr th:each="tarefa : ${tarefas}">
             <td th:text="${tarefa.id}"></td>
             <td th:text="${tarefa.nome}"></td>
-            <td th:text="${tarefa.status == 0? 'Não iniciada' : 'Em andamento'}"></td>
+            <!--<td th:text="${tarefa.status == 0? 'Não iniciada' : 'Em andamento'}"></td>-->
+            <div th:switch="${tarefa.status}">
+                <td th:case="0">Não iniciada</td>
+                <td th:case="1">Em andamento</td>
+                <td th:case="2">Concluída</td>
+            </div>
             <td>
-                <a class="btn btn-primary col-md-4" th:href="@{/tarefa/alterar/{id}(id=${tarefa.id})}">Editar</a>
-                &nbsp;&nbsp;
-                <a class="btn btn-success col-md-4" th:href="@{/tarefa/iniciar/{id}(id=${tarefa.id})}" data-toggle="modal" data-target="#exampleModal">Iniciar</a>
+                <a th:if="${tarefa.status == 0 || tarefa.status == 1}" class="btn btn-primary col-md-4" th:href="@{/tarefa/alterar/{id}(id=${tarefa.id})}">Editar</a>
+                <a th:if="${tarefa.status == 0}" class="btn btn-success col-md-4 iniciarTarefa" th:attr="id = ${tarefa.id}, nome = ${tarefa.nome}" th:href="@{/tarefa/iniciar/{id}(id=${tarefa.id})}" data-toggle="modal" data-target="#exampleModal">Iniciar</a>
+                <a th:if="${tarefa.status == 1}" class="btn btn-warning col-md-4 concluirTarefa" th:attr="id = ${tarefa.id}, nome = ${tarefa.nome}" th:href="@{/tarefa/concluir/{id}(id=${tarefa.id})}" data-toggle="modal" data-target="#concluirModal">Concluir</a>
+                <a th:if="${tarefa.status == 2}" class="btn btn-primary col-md-4 visualizarDados" th:attr="id = ${tarefa.id}, nome = ${tarefa.nome}" th:href="@{/tarefa/visualizar/{id}(id=${tarefa.id})}" data-toggle="modal" data-target="#visualizarModal">Visualizar Dados</a>
             </td>
         </tr>
         </tbody>
     </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Iniciar tarefa</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>Deseja iniciar a tarefa <span id="nomeTarefaModal"></span>?</div>
+                </div>
+                <div class="modal-footer">
+                    <a href="/tarefa"><button id="sim" class="btn btn-success" >Sim</button></a>
+                    <button id="naoexcluir" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="concluirModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="concluirModalLabel">Concluir tarefa</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>Deseja finalizar a tarefa <span id="nomeTarefaModal2"></span>?</div>
+                    <div>
+                        Selecione a nota:
+                        <select>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="/tarefa"><button id="sim2" class="btn btn-success" >Sim</button></a>
+                    <button id="naoexcluir2" class="btn btn-secondary" data-dismiss="modal">Não</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <a class="btn btn-success" th:href="@{/tarefa/adicionar}">Nova tarefa</a>
 </div>
+<script>
+
+    $( ".iniciarTarefa" ).click(function(e) {
+        e.preventDefault();
+        var nomeTarefa = $(this).attr("nome");
+        var idTarefa = $(this).attr("id");
+        $("#exampleModal").modal('show');
+        $("#nomeTarefaModal").text(nomeTarefa);
+
+        $('#sim').closest('a').attr('href', $(this).attr('href'));
+
+    });
+
+    $( ".concluirTarefa" ).click(function(e) {
+        e.preventDefault();
+        var nomeTarefa = $(this).attr("nome");
+        var idTarefa = $(this).attr("id");
+        $("#concluirModal").modal('show');
+        $("#nomeTarefaModal2").text(nomeTarefa);
+
+        $('#sim2').closest('a').attr('href', $(this).attr('href'));
+
+    });
+</script>
+
 </body>
 </html>
