@@ -28,7 +28,7 @@ public class TarefaController {
 
     @GetMapping("/adicionar")
     public ModelAndView adicionar(){
-        ModelAndView mv = new ModelAndView("Tela2A");
+         ModelAndView mv = new ModelAndView("Tela2A");
 
         List<Pessoa> pessoas = pessoaRepository.findAll();
 
@@ -49,6 +49,7 @@ public class TarefaController {
         List<Tarefa> tarefas = tarefaRepository.findAll();
 
         mv.addObject("tarefas", tarefas);
+        mv.addObject("insert", true);
 
         return mv;
     }
@@ -100,8 +101,8 @@ public class TarefaController {
         return mv;
     }
 
-    @GetMapping("/concluir/{id}")
-    public ModelAndView concluir(@PathVariable int id){
+    @GetMapping("/concluir/{id}/{nota}")
+    public ModelAndView concluir(@PathVariable int id, @PathVariable int nota){
         ModelAndView mv = new ModelAndView("redirect:/index");
 
         Tarefa t = tarefaRepository.getOne(id);
@@ -109,8 +110,11 @@ public class TarefaController {
         t.setStatus(2);
         t.setDataUltimaAlteracao(LocalDateTime.now());
 
+        t.setNota(nota);
+
         tarefaRepository.save(t);
 
         return mv;
     }
+
 }
